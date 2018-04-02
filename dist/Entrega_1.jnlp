@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="Entrega_1.jar" size="1919041" download="eager" />
+    <jar href="Entrega_1.jar" size="1921665" download="eager" />
     <jar href="lib/accesoaBD.jar" size="39697" download="eager" />
     <jar href="lib/controlsfx-8.40.14.jar" size="1215643" download="eager" />
   </resources>

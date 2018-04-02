@@ -9,6 +9,7 @@ import accesoaBD.AccesoaBD;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.*;
@@ -46,14 +47,13 @@ public class AlumnosController {
      private final LocalDate fecha = LocalDate.now();
      ObservableList<Alumno> alumnosObservable;
      AccesoaBD acceso = new AccesoaBD();
-     Image foto ;
+     Image foto;
+     
      
      public void initUI() {
         Aceptar.setDisable(true);
-        Eliminar.disableProperty().bind
-            (Tabla.getSelectionModel().selectedItemProperty().isNull());
-          
         
+          
         alumnosObservable = FXCollections.observableList(acceso.getAlumnos());
         Tabla.setItems(alumnosObservable);
         foto = null;
@@ -87,6 +87,27 @@ public class AlumnosController {
         // </editor-fold>
         //----------------------------
         
+        //----------------------------
+        // <editor-fold desc="listeners">
+        
+        Eliminar.disableProperty().bind
+            (Tabla.getSelectionModel().selectedItemProperty().isNull());
+        
+        Tabla.getSelectionModel().selectedIndexProperty().addListener((listener)->{
+            Img.setImage(Tabla.getSelectionModel(
+                        ).getSelectedItem().getFoto());
+        });
+        
+         Aceptar.disableProperty().bind(
+                 Bindings.isEmpty(DNIField.textProperty())
+                         .or(Bindings.isEmpty(NombreField.textProperty()))
+                         .or(Bindings.isEmpty(EdadField.textProperty()))
+                         .or(Bindings.isNull(Fecha.valueProperty()))
+                         .or(Bindings.isNull(Img.imageProperty()))
+                         .or(Bindings.isEmpty(DireccionField.textProperty())));
+         
+        // </editor-fold>
+      //----------------------------
      }
       //----------------------------
       // <editor-fold desc="instanciacion">
@@ -149,25 +170,49 @@ public class AlumnosController {
         Alumno alumno = new Alumno(dni, nombre, edad, direccion, fechadealta, foto);
         alumnosObservable.add(alumno);
         acceso.salvar();
+        Tabla.setDisable(false);
+        AddBox.setDisable(true);
+        AddBox.setVisible(false);
+        alumnosObservable = FXCollections.observableList(acceso.getAlumnos());
+        Tabla.setItems(alumnosObservable);
+        foto =null;
+        Img.setImage(foto);
+        Add.setDisable(false);
     }
 
     @FXML
     void OnAdd(ActionEvent event) {
+        Add.setDisable(true);
         AddBox.setDisable(false);
         Fecha.setValue(fecha);
         AddBox.setVisible(true);
-        
+        foto =null;
+        Img.setImage(foto);
+        Tabla.setDisable(true);
+        Tabla.getSelectionModel().clearSelection();
     }
 
     @FXML
     void OnCancelar(ActionEvent event) {
          AddBox.setDisable(true);
          AddBox.setVisible(false);
+         Tabla.setDisable(false);
+         foto =null;
+         Img.setImage(foto);
+         Add.setDisable(false);
     }
 
     @FXML
     void OnEliminar(ActionEvent event) {
-
+         Alumno alumno = Tabla.getSelectionModel().getSelectedItem();
+         alumnosObservable.remove(alumno);
+         acceso.salvar();
+         alumnosObservable = FXCollections.observableList(acceso.getAlumnos());
+         Tabla.setItems(alumnosObservable);
+         Tabla.getSelectionModel().clearSelection();
+         foto =null;
+         Img.setImage(foto);
+         
     }
 
     @FXML
