@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1" fx:controller="entrega_1.AlumnosController">
+   <right>
+      <Pane prefHeight="603.0" prefWidth="25.0" style="-fx-background-color: e6e6e6;" BorderPane.alignment="CENTER" />
+   </right>
+   <top>
+      <Pane prefHeight="25.0" prefWidth="850.0" style="-fx-background-color: e6e6e6;" BorderPane.alignment="CENTER" />
+   </top>
+   <left>
+      <Pane prefHeight="575.0" prefWidth="25.0" style="-fx-background-color: e6e6e6;" BorderPane.alignment="CENTER" />
+   </left>
+   <bottom>
+      <Pane prefHeight="25.0" prefWidth="850.0" style="-fx-background-color: e6e6e6;" BorderPane.alignment="CENTER" />
+   </bottom>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <GridPane alignment="TOP_CENTER" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: e6e6e6;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="368.0" minWidth="10.0" prefWidth="83.0" />
+                  <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="495.0" minWidth="10.0" prefWidth="377.0" />
+                  <ColumnConstraints hgrow="NEVER" maxWidth="302.0" minWidth="10.0" prefWidth="116.0" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="237.0" minWidth="10.0" prefWidth="137.0" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="237.0" minWidth="10.0" prefWidth="89.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="225.0" minHeight="10.0" prefHeight="94.0" valignment="TOP" vgrow="ALWAYS" />
+                  <RowConstraints maxHeight="424.0" minHeight="0.0" prefHeight="181.0" vgrow="ALWAYS" />
+                  <RowConstraints maxHeight="424.0" minHeight="10.0" prefHeight="111.0" vgrow="ALWAYS" />
+                  <RowConstraints maxHeight="424.0" minHeight="10.0" prefHeight="92.0" vgrow="ALWAYS" />
+                  <RowConstraints maxHeight="424.0" minHeight="0.0" prefHeight="23.0" vgrow="ALWAYS" />
+                  <RowConstraints maxHeight="536.0" minHeight="0.0" prefHeight="30.0" valignment="BOTTOM" vgrow="ALWAYS" />
+                  <RowConstraints maxHeight="536.0" minHeight="0.0" prefHeight="69.0" valignment="BOTTOM" vgrow="ALWAYS" />
+               </rowConstraints>
+               <children>
+                  <Label prefHeight="109.0" prefWidth="538.0" text="Alumnos" GridPane.columnSpan="2">
+                     <font>
+                        <Font size="44.0" />
+                     </font>
+                     <padding>
+                        <Insets left="80.0" />
+                     </padding>
+                  </Label>
+                  <Button fx:id="Volver" mnemonicParsing="false" onAction="#OnVolver" prefHeight="30.0" prefWidth="60.0" text="Volver" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="TOP">
+                     <GridPane.margin>
+                        <Insets right="20.0" />
+                     </GridPane.margin>
+                  </Button>
+                  <VBox prefHeight="192.0" prefWidth="233.0" spacing="5.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin>
+                     <children>
+                        <ImageView fx:id="Img" fitHeight="112.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets left="70.0" />
+                           </VBox.margin>
+                        </ImageView>
+                        <HBox alignment="CENTER" spacing="25.0">
+                           <children>
+                              <Button fx:id="Add" mnemonicParsing="false" onAction="#OnAdd" prefWidth="75.0" text="Añadir" />
+                              <Button fx:id="Eliminar" disable="true" mnemonicParsing="false" onAction="#OnEliminar" prefWidth="75.0" text="Eliminar" />
+                           </children>
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </VBox>
+                  <VBox fx:id="AddBox" prefHeight="308.0" prefWidth="216.0" spacing="5.0" visible="false" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
+                     <children>
+                        <TextField fx:id="DNIField" promptText="DNI">
+                           <VBox.margin>
+                              <Insets left="30.0" top="10.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <TextField fx:id="NombreField" promptText="Nombre">
+                           <VBox.margin>
+                              <Insets left="30.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <TextField fx:id="EdadField" promptText="Edad">
+                           <VBox.margin>
+                              <Insets left="30.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <TextField fx:id="DireccionField" promptText="Dirección">
+                           <VBox.margin>
+                              <Insets left="30.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <DatePicker fx:id="Fecha" onAction="#OnFecha" prefHeight="27.0" prefWidth="238.0" promptText="Fecha alta">
+                           <VBox.margin>
+                              <Insets left="30.0" />
+                           </VBox.margin>
+                        </DatePicker>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="14.0" prefWidth="223.0" spacing="15.0">
+                           <children>
+                              <Button fx:id="Foto" mnemonicParsing="false" onAction="#OnFoto" prefHeight="27.0" prefWidth="84.0" text="Fotografia" />
+                           </children>
+                           <VBox.margin>
+                              <Insets left="30.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="64.0" prefWidth="253.0" spacing="5.0">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="278.0" spacing="5.0">
+                           <children>
+                              <Button fx:id="Aceptar" mnemonicParsing="false" onAction="#OnAceptar" prefWidth="75.0" text="Aceptar" />
+                              <Button fx:id="Cancelar" mnemonicParsing="false" onAction="#OnCancelar" prefWidth="75.0" text="Cancelar" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <GridPane.margin>
+                        <Insets top="5.0" />
+                     </GridPane.margin>
+                  </VBox>
+                  <ListView fx:id="Tabla" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="4" />
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
