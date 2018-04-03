@@ -12,6 +12,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -204,8 +205,9 @@ public class CursosController {
         LocalDate fechainicio = FechaInicio.getValue();
         LocalDate fechafin = FechaFin.getValue();
         LocalTime hora = HoraSpin.getValue();
-        List<Dias> diaslist = DiasBox.getCheckModel().getCheckedItems();
-        ArrayList <Dias> diasimparte = (ArrayList <Dias>) diaslist ;
+        ObservableList<Dias> diaslistobservable = DiasBox.getCheckModel().getCheckedItems();
+        List<Dias> diaslist = diaslistobservable.stream().collect(Collectors.toList());
+        ArrayList <Dias> diasimparte = new ArrayList<Dias>(diaslist);
         Curso curso = new Curso(titulo, profesor,numMax,fechainicio,fechafin, hora, diasimparte,aula);
         
         cursosObservable.add(curso);
