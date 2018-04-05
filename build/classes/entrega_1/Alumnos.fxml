@@ -36,9 +36,9 @@
             <GridPane alignment="TOP_CENTER" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: e6e6e6;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <columnConstraints>
                   <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="368.0" minWidth="10.0" prefWidth="83.0" />
-                  <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="495.0" minWidth="10.0" prefWidth="377.0" />
+                  <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="495.0" minWidth="10.0" prefWidth="377.0" />
                   <ColumnConstraints hgrow="NEVER" maxWidth="302.0" minWidth="10.0" prefWidth="116.0" />
-                  <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="237.0" minWidth="10.0" prefWidth="137.0" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="237.0" minWidth="10.0" prefWidth="137.0" />
                   <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="237.0" minWidth="10.0" prefWidth="89.0" />
                </columnConstraints>
                <rowConstraints>
@@ -64,17 +64,20 @@
                         <Insets right="20.0" />
                      </GridPane.margin>
                   </Button>
-                  <VBox prefHeight="192.0" prefWidth="233.0" spacing="5.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                  <Pane fx:id="ImgPane" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                     <children>
+                        <ImageView fx:id="Img" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                     <GridPane.margin>
+                        <Insets left="80.0" top="50.0" />
+                     </GridPane.margin>
+                  </Pane>
+                  <VBox prefHeight="192.0" prefWidth="233.0" spacing="15.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="20.0" />
                      </GridPane.margin>
                      <children>
-                        <ImageView fx:id="Img" fitHeight="112.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
-                           <VBox.margin>
-                              <Insets left="70.0" />
-                           </VBox.margin>
-                        </ImageView>
-                        <HBox alignment="CENTER" spacing="25.0">
+                        <HBox alignment="CENTER_LEFT" spacing="25.0" VBox.vgrow="NEVER">
                            <children>
                               <Button fx:id="Add" mnemonicParsing="false" onAction="#OnAdd" prefWidth="75.0" text="Añadir" />
                               <Button fx:id="Eliminar" disable="true" mnemonicParsing="false" onAction="#OnEliminar" prefWidth="75.0" text="Eliminar" />
@@ -82,13 +85,16 @@
                            <padding>
                               <Insets top="5.0" />
                            </padding>
+                           <VBox.margin>
+                              <Insets left="30.0" />
+                           </VBox.margin>
                         </HBox>
                      </children>
                      <padding>
                         <Insets top="5.0" />
                      </padding>
                   </VBox>
-                  <VBox fx:id="AddBox" prefHeight="308.0" prefWidth="216.0" spacing="5.0" visible="false" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
+                  <VBox fx:id="AddBox" disable="true" prefHeight="308.0" prefWidth="216.0" spacing="5.0" visible="false" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
                      <children>
                         <TextField fx:id="DNIField" promptText="DNI">
                            <VBox.margin>

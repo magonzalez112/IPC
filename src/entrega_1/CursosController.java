@@ -3,12 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package entrega_1;
 
 import accesoaBD.AccesoaBD;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.*;
@@ -17,15 +23,19 @@ import javafx.stage.Stage;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+import javafx.util.converter.LocalTimeStringConverter;
+import modelo.Alumno;
 import modelo.Curso;
 import modelo.Dias;
 import org.controlsfx.control.CheckComboBox;
@@ -43,16 +53,18 @@ public class CursosController {
     }
      
      private final LocalDate fecha = LocalDate.now();
+     AccesoaBD acceso = new AccesoaBD();
+     ObservableList<Curso> cursosObservable;
      
      public void initUI() {
         Aceptar.setDisable(true);
         Eliminar.disableProperty().bind
             (Tabla.getSelectionModel().selectedItemProperty().isNull());
         
-        AccesoaBD acceso = new AccesoaBD();
-        ObservableList<Curso> cursosObservable;
+        
         cursosObservable = FXCollections.observableList(acceso.getCursos());
         Tabla.setItems(cursosObservable);
+        
         
         //----------------------------
         // <editor-fold desc="rendering">
@@ -67,7 +79,7 @@ public class CursosController {
             }
         };
         FechaInicio.setDayCellFactory(dayCellFactory);
-        FechaFin.setDayCellFactory(dayCellFactory);
+        
         
         Tabla.setCellFactory((ListView<Curso> param) -> new ListCell<Curso>() {
             @Override protected void updateItem(Curso item, boolean empty) {
@@ -81,9 +93,59 @@ public class CursosController {
             }
         });
         
+         SpinnerValueFactory timeFactory = new SpinnerValueFactory() {
+
+             {
+                 setConverter(new LocalTimeStringConverter(DateTimeFormatter.ofPattern("HH:mm"),
+                         DateTimeFormatter.ofPattern("HH:mm")));
+             }
+
+             @Override
+             public void decrement(int steps) {
+                 if (getValue() == null) {
+                     setValue(LocalTime.now());
+                 } else {
+                     LocalTime time = (LocalTime) getValue();
+                     setValue(time.minusMinutes(steps));
+                 }
+             }
+
+             @Override
+             public void increment(int steps) {
+                 if (this.getValue() == null) {
+                     setValue(LocalTime.now());
+                 } else {
+                     LocalTime time = (LocalTime) getValue();
+                     setValue(time.plusMinutes(steps));
+                 }
+             }
+         };
+     
+         HoraSpin.setValueFactory(timeFactory);
+        
+     
+        
         // </editor-fold>
         //----------------------------
         
+         //----------------------------
+        // <editor-fold desc="listeners">
+        
+         Aceptar.disableProperty().bind(
+                 Bindings.isEmpty(TituloField.textProperty())
+                         .or(Bindings.isEmpty(ProfesorField.textProperty()))
+                         .or(Bindings.isEmpty(NumeroField.textProperty()))
+                         .or(Bindings.isEmpty(AulaField.textProperty()))
+                         .or(Bindings.isNull(FechaInicio.valueProperty()))
+                         .or(Bindings.isNull(FechaFin.valueProperty()))
+                         .or(Bindings.isNull(HoraSpin.valueProperty()))
+                         .or(Bindings.isEmpty(DiasBox.checkModelProperty().get().getCheckedItems())));
+        
+       
+        
+        // </editor-fold>
+      //----------------------------
+      
      }
       //----------------------------
       // <editor-fold desc="instanciacion">
@@ -143,24 +205,71 @@ public class CursosController {
         String profesor = ProfesorField.getText();
         int numMax = Integer.parseInt(NumeroField.getText());
         String aula = AulaField.getText();
+        LocalDate fechainicio = FechaInicio.getValue();
+        LocalDate fechafin = FechaFin.getValue();
+        LocalTime hora = HoraSpin.getValue();
+        ObservableList<Dias> diaslistobservable = DiasBox.getCheckModel().getCheckedItems();
+        List<Dias> diaslist = diaslistobservable.stream().collect(Collectors.toList());
+        ArrayList <Dias> diasimparte = new ArrayList<Dias>(diaslist);
+        Curso curso = new Curso(titulo, profesor,numMax,fechainicio,fechafin, hora, diasimparte,aula);
         
+        cursosObservable.add(curso);
+        acceso.salvar();
+        Tabla.setDisable(false);
+        AddBox.setDisable(true);
+        AddBox.setVisible(false);
+        cursosObservable = FXCollections.observableList(acceso.getCursos());
+        Tabla.setItems(cursosObservable);
+        Add.setDisable(false);
     }
 
     @FXML
     void OnAdd(ActionEvent event) {
+        Add.setDisable(true);
         AddBox.setDisable(false);
         AddBox.setVisible(true);
+        Tabla.setDisable(true);
+        Tabla.getSelectionModel().clearSelection();
+        FechaInicio.setValue(fecha);
+        DiasBox.getItems().addAll(Dias.values());
+        HoraSpin.setEditable(true);
     }
 
     @FXML
     void OnCancelar(ActionEvent event) {
          AddBox.setDisable(true);
          AddBox.setVisible(false);
+         Tabla.setDisable(false);
+         Add.setDisable(false);
     }
 
     @FXML
     void OnEliminar(ActionEvent event) {
+         Curso curso = Tabla.getSelectionModel().getSelectedItem();
+         if(acceso.getMatriculasDeCurso(curso).isEmpty()) {
+         cursosObservable.remove(curso);
+         acceso.salvar();
+         cursosObservable = FXCollections.observableList(acceso.getCursos());
+         Tabla.setItems(cursosObservable);
+         }
+          else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Diálogo de información");
+            alert.setHeaderText(null);
+            List <Alumno> alumnosalert = acceso.getAlumnosDeCurso(curso);
+            String nombre, nombres;
+            nombres = "";
+            for (Alumno a : alumnosalert) {
+                   nombre = a.getNombre();
+                   nombres = nombres + "\n"+ nombre;
+                    }
+            alert.setContentText(curso.getTitulodelcurso()+ " " + "no puede elimarse." + "\n"
+                    + "Existen matriculas de los alumnos:" + nombres);
+            alert.showAndWait();
 
+        }
+         Tabla.getSelectionModel().clearSelection();
+         
     }
     
     @FXML
